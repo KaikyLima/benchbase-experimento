@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<parameters>
+
+    <!-- Configuração da conexão -->
+    <type>POSTGRES</type>
+    <driver>org.postgresql.Driver</driver>
+
+    <url>
+        jdbc:postgresql://localhost:5433/benchbase?sslmode=disable&amp;ApplicationName=mytrace
+    </url>
+
+    <username>postgres</username>
+    <password>123456</password>
+
+    <reconnectOnConnectionFailure>true</reconnectOnConnectionFailure>
+    <isolation>TRANSACTION_SERIALIZABLE</isolation>
+    <batchsize>128</batchsize>
+
+    <!-- Como não existe Warehouse, deixe 1 -->
+    <scalefactor>1</scalefactor>
+
+    <!-- Número de workers -->
+    <terminals>1</terminals>
+
+    <!-- Execução -->
+    <works>
+        <work>
+            <time>60</time>
+            <rate>100</rate>
+            <weights>100</weights>
+        </work>
+    </works>
+
+    <!-- Lista de transações -->
+    <transactiontypes>
+        <transactiontype>
+            <name>GetUsuarios</name>
+        </transactiontype>
+    </transactiontypes>
+
+</parameters>

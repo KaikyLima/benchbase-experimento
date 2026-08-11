@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<parameters>
+
+<!-- Connection details -->
+<type>ORACLE</type>
+<driver>oracle.jdbc.OracleDriver</driver>
+<url>jdbc:oracle:thin:@localhost:1521/FREEPDB1</url>
+<username>SYSTEM</username>
+<password>123456Aa!</password>
+
+<reconnectOnConnectionFailure>true</reconnectOnConnectionFailure>
+<isolation>TRANSACTION_SERIALIZABLE</isolation>
+<batchsize>128</batchsize>
+
+    <!-- Como não existe Warehouse, deixe 1 -->
+    <scalefactor>1</scalefactor>
+
+    <!-- Número de workers -->
+    <terminals>1</terminals>
+
+    <!-- Execução -->
+    <works>
+        <work>
+            <time>60</time>
+            <rate>100</rate>
+            <weights>100</weights>
+        </work>
+    </works>
+
+    <!-- Lista de transações -->
+    <transactiontypes>
+        <transactiontype>
+            <name>GetUsuarios</name>
+        </transactiontype>
+    </transactiontypes>
+
+</parameters>
