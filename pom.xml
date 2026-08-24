@@ -89,6 +89,29 @@
             </dependencies>
         </profile>
         <profile>
+            <id>duckdb</id>
+
+            <activation>
+                <property>
+                    <name>env.BENCHBASE_PROFILE</name>
+                    <value>duckdb</value>
+                </property>
+            </activation>
+
+            <properties>
+                <classifier>duckdb</classifier>
+            </properties>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.duckdb</groupId>
+                    <artifactId>duckdb_jdbc</artifactId>
+                    <version>1.4.5.0</version>
+                    <scope>runtime</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
             <id>mysql</id>
             <activation>
                 <property>

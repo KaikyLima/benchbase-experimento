@@ -31,6 +31,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
 import java.sql.SQLRecoverableException;
 import java.sql.Statement;
 import java.time.Duration;
@@ -84,7 +85,13 @@ public abstract class Worker<T extends BenchmarkModule> implements Runnable {
       try {
         this.conn = this.benchmark.makeConnection();
         this.conn.setAutoCommit(false);
-        this.conn.setTransactionIsolation(this.configuration.getIsolationMode());
+        try {
+          this.conn.setTransactionIsolation(this.configuration.getIsolationMode());
+        } catch (SQLFeatureNotSupportedException ex) {
+          LOG.warn(
+              "Driver for {} does not support setTransactionIsolation(). Continuing with the driver's default isolation level.",
+              this.configuration.getDatabaseType());
+        }
       } catch (SQLException ex) {
         throw new RuntimeException("Failed to connect to database", ex);
       }

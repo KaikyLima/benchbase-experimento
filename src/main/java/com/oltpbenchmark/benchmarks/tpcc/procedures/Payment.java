@@ -26,6 +26,7 @@ import com.oltpbenchmark.benchmarks.tpcc.pojo.Customer;
 import com.oltpbenchmark.benchmarks.tpcc.pojo.District;
 import com.oltpbenchmark.benchmarks.tpcc.pojo.Warehouse;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Random;
@@ -309,7 +310,8 @@ public class Payment extends TPCCProcedure {
 
   private void updateWarehouse(Connection conn, int w_id, float paymentAmount) throws SQLException {
     try (PreparedStatement payUpdateWhse = this.getPreparedStatement(conn, payUpdateWhseSQL)) {
-      payUpdateWhse.setBigDecimal(1, BigDecimal.valueOf(paymentAmount));
+      payUpdateWhse.setBigDecimal(
+          1, BigDecimal.valueOf(paymentAmount).setScale(2, RoundingMode.HALF_UP));
       payUpdateWhse.setInt(2, w_id);
       // MySQL reports deadlocks due to lock upgrades:
       // t1: read w_id = x; t2: update w_id = x; t1 update w_id = x
@@ -378,7 +380,8 @@ public class Payment extends TPCCProcedure {
   private void updateDistrict(Connection conn, int w_id, int districtID, float paymentAmount)
       throws SQLException {
     try (PreparedStatement payUpdateDist = this.getPreparedStatement(conn, payUpdateDistSQL)) {
-      payUpdateDist.setBigDecimal(1, BigDecimal.valueOf(paymentAmount));
+      payUpdateDist.setBigDecimal(
+          1, BigDecimal.valueOf(paymentAmount).setScale(2, RoundingMode.HALF_UP));
       payUpdateDist.setInt(2, w_id);
       payUpdateDist.setInt(3, districtID);
 
