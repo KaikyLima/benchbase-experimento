@@ -19,4 +19,5 @@
     <plugin name="otmetrics">com.oltpbenchmark.benchmarks.otmetrics.OTMetricsBenchmark</plugin>
     <plugin name="templated">com.oltpbenchmark.benchmarks.templated.TemplatedBenchmark</plugin>
     <plugin name="mytrace">com.oltpbenchmark.benchmarks.mytrace.MyTraceBenchmark</plugin>
+    <plugin name="tpcc_regras">com.oltpbenchmark.benchmarks.tpcc_regras.TPCCBenchmark</plugin>
 </plugins>
