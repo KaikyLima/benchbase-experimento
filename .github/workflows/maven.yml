@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -76,7 +76,7 @@ jobs:
         profile: [ 'cockroachdb', 'mariadb', 'mysql', 'oracle', 'phoenix', 'postgres', 'spanner', 'sqlite', 'sqlserver' ]
     steps:
     - name: Checkout repo
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
 
     - name: Set up JDK
       uses: actions/setup-java@v4
@@ -766,7 +766,7 @@ jobs:
           PGPASSWORD=password dropdb -h localhost -U admin benchbase --if-exists
           PGPASSWORD=password createdb -h localhost -U admin benchbase
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       # https://github.com/actions/cache/blob/master/examples.md#java---maven
       - name: Cache local Maven repository
         uses: actions/cache@v4
