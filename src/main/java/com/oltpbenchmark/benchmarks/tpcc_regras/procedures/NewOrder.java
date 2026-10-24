@@ -35,14 +35,11 @@ public class NewOrder extends TPCCProcedure {
   public final SQLStmt stmtGetCustSQL =
       new SQLStmt(
           """
-        SELECT C_DISCOUNT,
-              C_LAST,
-              C_CREDIT
-        FROM CUSTOMER
-        WHERE C_W_ID = ?
-          AND C_D_ID = ?
-          AND C_ID = ?
-          AND C_BALANCE <= C_CREDIT_LIM
+        SELECT C_DISCOUNT, C_LAST, C_CREDIT
+          FROM %s
+         WHERE C_W_ID = ?
+           AND C_D_ID = ?
+           AND C_ID = ?
     """
               .formatted(TPCCConstants.TABLENAME_CUSTOMER));
 
@@ -104,27 +101,12 @@ public class NewOrder extends TPCCProcedure {
   public final SQLStmt stmtGetStockSQL =
       new SQLStmt(
           """
-      SELECT S.S_QUANTITY,
-             S.S_DATA,
-             S.S_DIST_01,
-             S.S_DIST_02,
-             S.S_DIST_03,
-             S.S_DIST_04,
-             S.S_DIST_05,
-             S.S_DIST_06,
-             S.S_DIST_07,
-             S.S_DIST_08,
-             S.S_DIST_09,
-             S.S_DIST_10
-      FROM STOCK S
-      JOIN ITEM I
-        ON I.I_ID = S.S_I_ID
-      WHERE S.S_I_ID = ?
-        AND S.S_W_ID = ?
-        AND S.S_QUANTITY >= 10
-        AND I.I_PRICE > 0
-      FOR UPDATE
-  """
+        SELECT S_QUANTITY, S_DATA, S_DIST_01, S_DIST_02, S_DIST_03, S_DIST_04, S_DIST_05,
+               S_DIST_06, S_DIST_07, S_DIST_08, S_DIST_09, S_DIST_10
+          FROM %s
+         WHERE S_I_ID = ?
+           AND S_W_ID = ? FOR UPDATE
+    """
               .formatted(TPCCConstants.TABLENAME_STOCK));
 
   public final SQLStmt stmtUpdateStockSQL =

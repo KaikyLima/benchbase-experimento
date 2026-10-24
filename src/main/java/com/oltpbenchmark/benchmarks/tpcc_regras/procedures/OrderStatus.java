@@ -40,61 +40,50 @@ public class OrderStatus extends TPCCProcedure {
   public SQLStmt ordStatGetNewestOrdSQL =
       new SQLStmt(
           """
-      SELECT O_ID, O_CARRIER_ID, O_ENTRY_D
-        FROM  %s
-       WHERE O_W_ID = ?
-         AND O_D_ID = ?
-         AND O_C_ID = ?
-         AND O_ENTRY_D >= CURRENT_TIMESTAMP - INTERVAL '12' MONTH
-       ORDER BY O_ID DESC LIMIT 1
+        SELECT O_ID, O_CARRIER_ID, O_ENTRY_D
+          FROM  %s
+         WHERE O_W_ID = ?
+           AND O_D_ID = ?
+           AND O_C_ID = ?
+         ORDER BY O_ID DESC LIMIT 1
     """
               .formatted(TPCCConstants.TABLENAME_OPENORDER));
 
   public SQLStmt ordStatGetOrderLinesSQL =
       new SQLStmt(
           """
-      SELECT OL.OL_I_ID,
-             OL.OL_SUPPLY_W_ID,
-             OL.OL_QUANTITY,
-             OL.OL_AMOUNT,
-             OL.OL_DELIVERY_D
-        FROM %s OL
-        JOIN %s I
-          ON I.I_ID = OL.OL_I_ID
-       WHERE OL.OL_O_ID = ?
-         AND OL.OL_D_ID = ?
-         AND OL.OL_W_ID = ?
-         AND OL.OL_DELIVERY_D IS NULL
-         AND I.I_PRICE > 0
+        SELECT OL_I_ID, OL_SUPPLY_W_ID, OL_QUANTITY, OL_AMOUNT, OL_DELIVERY_D
+          FROM  %s
+         WHERE OL_O_ID = ?
+           AND OL_D_ID = ?
+           AND OL_W_ID = ?
     """
-              .formatted(TPCCConstants.TABLENAME_ORDERLINE, TPCCConstants.TABLENAME_ITEM));
+              .formatted(TPCCConstants.TABLENAME_ORDERLINE));
 
   public SQLStmt payGetCustSQL =
       new SQLStmt(
           """
-      SELECT C_FIRST, C_MIDDLE, C_LAST, C_STREET_1, C_STREET_2,
-             C_CITY, C_STATE, C_ZIP, C_PHONE, C_CREDIT, C_CREDIT_LIM,
-             C_DISCOUNT, C_BALANCE, C_YTD_PAYMENT, C_PAYMENT_CNT, C_SINCE
-        FROM  %s
-       WHERE C_W_ID = ?
-         AND C_D_ID = ?
-         AND C_ID = ?
-         AND C_CREDIT_LIM > 0
+        SELECT C_FIRST, C_MIDDLE, C_LAST, C_STREET_1, C_STREET_2,
+               C_CITY, C_STATE, C_ZIP, C_PHONE, C_CREDIT, C_CREDIT_LIM,
+               C_DISCOUNT, C_BALANCE, C_YTD_PAYMENT, C_PAYMENT_CNT, C_SINCE
+          FROM  %s
+         WHERE C_W_ID = ?
+           AND C_D_ID = ?
+           AND C_ID = ?
     """
               .formatted(TPCCConstants.TABLENAME_CUSTOMER));
 
   public SQLStmt customerByNameSQL =
       new SQLStmt(
           """
-      SELECT C_FIRST, C_MIDDLE, C_ID, C_STREET_1, C_STREET_2, C_CITY,
-             C_STATE, C_ZIP, C_PHONE, C_CREDIT, C_CREDIT_LIM, C_DISCOUNT,
-             C_BALANCE, C_YTD_PAYMENT, C_PAYMENT_CNT, C_SINCE
-        FROM  %s
-       WHERE C_W_ID = ?
-         AND C_D_ID = ?
-         AND C_LAST = ?
-         AND C_PAYMENT_CNT > 0
-       ORDER BY C_FIRST
+        SELECT C_FIRST, C_MIDDLE, C_ID, C_STREET_1, C_STREET_2, C_CITY,
+               C_STATE, C_ZIP, C_PHONE, C_CREDIT, C_CREDIT_LIM, C_DISCOUNT,
+               C_BALANCE, C_YTD_PAYMENT, C_PAYMENT_CNT, C_SINCE
+          FROM  %s
+         WHERE C_W_ID = ?
+           AND C_D_ID = ?
+           AND C_LAST = ?
+         ORDER BY C_FIRST
     """
               .formatted(TPCCConstants.TABLENAME_CUSTOMER));
 

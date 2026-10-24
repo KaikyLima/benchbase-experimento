@@ -35,37 +35,23 @@ public class Delivery extends TPCCProcedure {
   public SQLStmt delivGetOrderIdSQL =
       new SQLStmt(
           """
-          SELECT NO.NO_O_ID
-          FROM %s NO
-          JOIN %s O
-            ON O.O_ID = NO.NO_O_ID
-           AND O.O_D_ID = NO.NO_D_ID
-           AND O.O_W_ID = NO.NO_W_ID
-           AND O.O_CARRIER_ID IS NULL
-         WHERE NO.NO_D_ID = ?
-           AND NO.NO_W_ID = ?
-         ORDER BY NO.NO_O_ID ASC
-         LIMIT 1
-      """
-              .formatted(TPCCConstants.TABLENAME_NEWORDER, TPCCConstants.TABLENAME_OPENORDER));
+            SELECT NO_O_ID FROM %s
+             WHERE NO_D_ID = ?
+               AND NO_W_ID = ?
+             ORDER BY NO_O_ID ASC
+             LIMIT 1
+        """
+              .formatted(TPCCConstants.TABLENAME_NEWORDER));
 
   public SQLStmt delivDeleteNewOrderSQL =
       new SQLStmt(
           """
-          DELETE FROM %s NO
-          WHERE NO.NO_O_ID = ?
-            AND NO.NO_D_ID = ?
-            AND NO.NO_W_ID = ?
-            AND EXISTS (
-                SELECT 1
-                FROM %s O
-                WHERE O.O_ID = NO.NO_O_ID
-                  AND O.O_D_ID = NO.NO_D_ID
-                  AND O.O_W_ID = NO.NO_W_ID
-                  AND O.O_CARRIER_ID IS NULL
-            )
-      """
-              .formatted(TPCCConstants.TABLENAME_NEWORDER, TPCCConstants.TABLENAME_OPENORDER));
+            DELETE FROM %s
+            WHERE NO_O_ID = ?
+            AND NO_D_ID = ?
+            AND NO_W_ID = ?
+        """
+              .formatted(TPCCConstants.TABLENAME_NEWORDER));
 
   public SQLStmt delivGetCustIdSQL =
       new SQLStmt(
@@ -80,13 +66,12 @@ public class Delivery extends TPCCProcedure {
   public SQLStmt delivUpdateCarrierIdSQL =
       new SQLStmt(
           """
-      UPDATE %s
-         SET O_CARRIER_ID = ?
-       WHERE O_ID = ?
-         AND O_D_ID = ?
-         AND O_W_ID = ?
-         AND O_CARRIER_ID IS NULL
-  """
+        UPDATE %s
+           SET O_CARRIER_ID = ?
+         WHERE O_ID = ?
+           AND O_D_ID = ?
+           AND O_W_ID = ?
+    """
               .formatted(TPCCConstants.TABLENAME_OPENORDER));
 
   public SQLStmt delivUpdateDeliveryDateSQL =
@@ -103,13 +88,12 @@ public class Delivery extends TPCCProcedure {
   public SQLStmt delivSumOrderAmountSQL =
       new SQLStmt(
           """
-      SELECT SUM(OL_AMOUNT) AS OL_TOTAL
-        FROM %s
-       WHERE OL_O_ID = ?
-         AND OL_D_ID = ?
-         AND OL_W_ID = ?
-         AND OL_DELIVERY_D IS NULL
-  """
+        SELECT SUM(OL_AMOUNT) AS OL_TOTAL
+          FROM %s
+         WHERE OL_O_ID = ?
+           AND OL_D_ID = ?
+           AND OL_W_ID = ?
+    """
               .formatted(TPCCConstants.TABLENAME_ORDERLINE));
 
   public SQLStmt delivUpdateCustBalDelivCntSQL =
